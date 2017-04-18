@@ -1,0 +1,29 @@
+title               = "A.I's Blog"
+baseURL             = "https://merrick.luois.me"
+builddrafts         = false
+canonifyurls        = true
+contentdir          = "content"
+languageCode        = "en-US"
+layoutdir           = "layouts"
+publishdir          = "docs"
+pygmentsuseclasses  = true
+#disqusshortname     = "cocoaexamplesite" # Comment out to disable Disqus.
+pluralizelisttitles = false
+
+[permalinks]
+fixed = ":title/"
+blog  = ":slug/"
+[params]
+gravatar     = "5c57af8fc8d824c89109b8f5d362654d"
+author       = "A.I."
+cachebuster  = true
+dateform     = "Jan 2, 2006"
+dateformfull = "Mon Jan 2 2006 15:04:05 MST"
+description  = "A.I.'s writing here"
+github       = "//github.com/merrickluo"
+highlightjs  = true
+lang         = "en"
+twitter      = "//twitter.com/merrickluo"
+
+
+highlightjslanguages = ["lisp", "bash"]
