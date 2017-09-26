@@ -1,0 +1,67 @@
+---
+title: "为什么我开始使用开源替代产品"
+date: 2017-09-23T23:35:24+08:00
+slug: "why-i-am-going-opensource"
+draft: true
+---
+
+去年8月，Lastpass 把全平台同步的功能[[https://lifehacker.com/lastpass-now-lets-you-sync-passwords-on-any-one-platfor-1721827587][免费开放]]了，作为一个之前为了这个功能付费
+的用户，虽然当时感觉到有点不爽，但是每年 $12 并不算贵的价格让我觉得也没什么可
+抱怨的。转眼又过了一年，Lastpass 又决定将[[http://www.droid-life.com/2017/08/03/lastpass-price-change-premium/][年费 double]]，double 之后的价格是
+$24，老实说我也不觉得贵，但是同一时期又发生了很多事情，让我对 Google，Facebook
+ 等大公司产生了许多不满。Lastpass 的这一决定就坚定了 +我对 RMS 的信仰+ 。
+
+*** 我选用的开源替代产品
+
+**** Lastpass -> Keepass
+
+这一项大概是最简单的了，虽然我不太喜欢Lastpass的运营方式，但是老实说他们的产品
+倒是没什么问题，导出非常方便，导出成CSV然后在Keepass导入即可。Keepass导入时
+选择Lastpass 格式基本都可以保留。完成迁移后删除账号即可。
+Keepass 插件方面 Chrome：chromeIPass，不过下面就说到，我同时也换到了
+Firefox，所以会用Keefox。
+
+**** Evernote -> orgmode
+
+Evernote 的客户端可以说一直很难用了，我自己之前存下的笔记也不算特别有价值，
+所以导出之后还一直没有整理到 orgmode， 不过类似的工具很多，比如[[https://github.com/mgmart/EverOrg][这个]]我随手
+搜到的，目前我新的笔记都在orgmode，感觉良好。
+
+**** Dropbox -> NextCloud
+
+Dropbox，之前也是头脑一热给了钱，但是后来发现我并没有那么多文件需要同步，
+加上最近买了Gen8，有了NAS之后这样的需求就更少了，除了一些常用文件和Keepass
+的db以外都能放进NAS了，所以决定在低配Linode上跑一个 [[https://wiki.archlinux.org/index.php/Nextcloud][NextCloud]] 然后其他东西
+都扔进 NAS 了（
+
+**** Chrome -> Firefox
+
+这一步对我来说相当的艰难了，粗略的估算一下，我用Chrome大概有7-8年了，中间其实
+一直有尝试过Firefox，但是每次都会遇到一些不开心的事情，总体来说Firefox的
+流畅/稳定性还是跟Firefox有一些差距。不过这次既然下定决心，花了一段时间适应后，
+Firefox在插件方面的优势还是有不少的，不过可惜的是，Firefox 57 决定放弃自己更
+先进的插件系统，目前打算先锁死在56不更新。
+
+插件方面，之前Chrome装了非常多，迁移后也没有一一去找对应的替代，秉承我重装系统
+不备份软件的原则：需要的时候自然会想起来。
+目前用到的有：
+
+- [[https://addons.mozilla.org/en-Us/firefox/addon/duckduckgo-for-firefox/?src=userprofile][DuckDuckGo Plus]] 可有可无，省去了修改默认搜索引擎的功夫
+- [[https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/?src=search][Greasemonky]] // 无需多言
+- [[https://addons.mozilla.org/en-Us/firefox/addon/stylish/?src=search][Stylish]]
+- [[https://addons.mozilla.org/en-Us/firefox/addon/ublock-origin/?src=search][uBlock Origin]]
+- [[https://addons.mozilla.org/en-Us/firefox/addon/vimfx/?src=ss][VimFx]] // 这个已经正式宣布不支持 Firefox 57 了，也算是不升级的一大原因
+- [[https://addons.mozilla.org/en-Us/firefox/addon/session-manager/?src=search][Session Manager]] // Firefox 崩溃不会保留 Session
+- [[https://addons.mozilla.org/en-Us/firefox/addon/keefox/?src=search][KeeFox]] // 最好用的 Keepass 插件吧
+- [[https://addons.mozilla.org/en-Us/firefox/addon/instant-translate/?src=ss][Instant Translate]] // 我找到的最好用的翻译插件（费了不少功夫）
+
+
+**** Android -> Lineage/AOSP
+
+这一步尚在计划中... lineage目前还没有 officially 支持 Pixel，没有GApps的
+Android 也基本是个残废...
+
+**** Google -> DuckDuckGo
+
+这个确实也挺艰难的，老实说我不认为有任何搜索引擎能达到Google一样的水平，不过
+DuckDuckGo的优点是，任意关键词 + !g 就能直接跳转到Google搜索...
