@@ -26,5 +26,17 @@ highlightjs  = true
 lang         = "en"
 twitter      = "//twitter.com/merrickluo"
 
+[[menu.main]]
+name                   = "Blog"
+weight                 = -120
+identifier             = "blog"
+url                    = "/blog/"
+
+[[menu.main]]
+name                   = "About"
+weight                 = -110
+identifier             = "about"
+url                    = "/about/"
+
 
 highlightjslanguages = ["lisp", "bash"]
