@@ -10,6 +10,7 @@ theme               = "cocoa"
 pygmentsuseclasses  = true
 #disqusshortname     = "cocoaexamplesite" # Comment out to disable Disqus.
 pluralizelisttitles = false
+staticDir = ["content/statics/"]
 
 [permalinks]
 fixed = ":title/"
