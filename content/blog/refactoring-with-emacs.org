@@ -1,0 +1,39 @@
+---
+title: "Refactoring With Emacs"
+date: 2018-01-20T12:22:35+08:00
+draft: true
+---
+
+As a former Java (Android) developer, I am basically a spoiled boy
+when talking about refactoring code, thanks JetBrain!
+
+After switch to backend development, now I use Emacs for everything,
+and also learned many tricks doing refactoring in Emacs. Let's talk
+about it.
+
+*** [[https://github.com/victorhge/iedit][iedit]]
+The most common mistake when coding is typo, thanks to auto-complete
+tools (in my case, [[http://company-mode.github.io/][company-mode]]), if you made a typo when define
+function or variable, you are likely to have it all over the place.
+
+TODO: images & examples
+
+But this look like something ~M-x replace-string~ can also do the job,
+yes, ~replace-string~ could do this, but it's hard to say if it's
+what we want when change happens instantly.
+
+
+*** [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Narrowing.html][narrowing]]
+What if I want to rename a local variable name in a single function?
+
+
+*** [[https://github.com/abo-abo/swiper][ivy-occur]] & [[https://github.com/mhayashi1120/Emacs-wgrep][wgrep]]
+Things gets messy when names are exported and used in many files in
+your project.
+
+
+*** PS
+
+I found this [[https://oremacs.com/2015/01/27/my-refactoring-workflow/][awesome post]] by @abo-abo (author of swiper/ivy)
+when I writing, I'm finishing this anyway
+(just for English writing practice, :P).
