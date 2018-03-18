@@ -1,0 +1,144 @@
+---
+title: "Shadowsocks Openwrt Setup"
+date: 2018-03-14T00:07:10+08:00
+draft: false
+---
+
+正常来讲我本来不想写一篇 “Yet another Shadowsocks installation guide"，
+不过前几天升级路由发现又得编译一次然后之前的工具又不见了的时候，又得到 Google
+“翻箱倒柜”找编译步骤，不如记下来顺便发一下吧。
+
+** 编译环境
+
+到 [[https://downloads.openwrt.org/][Openwrt]] 找到路由器对应的 SDK 下载条目，我路由器是 WNDR4300，版本是 lede
+17.01.4，SDK 名字是
+`lede-sdk-17.01.4-ar71xx-nand_gcc-5.4.0_musl-1.1.16.Linux-x86_64.tar.xz`
+之所以先看名字是想确定 gcc 的版本，据经验来看，使用其他版本的 gcc 编译会很惨
+（此处省略200字抱怨）。
+
+由于这时候还没有翻墙，所以编译最好在一个墙外的 VPS 上搞定。
+（安装 docker 这种步骤就先跳过了）。
+
+#+NAME prepare gcc
+#+BEGIN_SRC shell
+docker run -it --name lede gcc:5.4 bash
+
+cd /usr/src
+curl $SDK_URL -O
+tar xvf $SDK_FILENAME
+mv $SDK_DIR lede-sdk
+cd lede-sdk
+#+END_SRC
+
+** 编译
+
+这两位 [[https://github.com/shadowsocks/openwrt-shadowsocks][openwrt-shadowsocks]] & [[https://github.com/shadowsocks/luci-app-shadowsocks][luci-app-shadowsocks]]
+
+#+NAME: compile
+#+BEGIN_SRC shell
+git clone https://github.com/shadowsocks/openwrt-feeds.git package/feeds
+git clone https://github.com/shadowsocks/openwrt-shadowsocks.git package/shadowsocks-libev
+
+
+git clone https://github.com/shadowsocks/luci-app-shadowsocks.git package/luci-app-shadowsocks
+
+pushd package/luci-app-shadowsocks/tools/po2lmo
+make && make install
+popd
+
+make menuconfig
+
+make package/shadowsocks-libev/compile V=99
+make package/luci-app-shadowsocks/compile V=99
+#+END_SRC
+
+** 打包
+
+#+NAME: package
+#+BEGIN_SRC shell
+mkdir ipks
+
+# 有些是不需要的，不过懒得花时间去排除了
+cp bin/packages/mips_24kc/base/*.ipk ipks/
+cp bin/packages/mips_24kc/packages/*.ipk ipks/
+cp bin/targets/ar71xx/nand/pacakges/*.ipk ipks/
+
+tar cvf notimportant.tar ipks
+
+exit
+
+docker cp lede:/usr/src/lede-sdk/notimportant.tar ./
+#+END_SRC
+
+** 安装
+
+#+NAME: install
+#+BEGIN_SRC shell
+scp notimportant.tar root@lede:/tmp/
+
+ssh root@lede
+cd /tmp
+tar xvf notimportant.tar
+cd ipks
+opkg install *.ipk
+
+opkg update
+opkg install iptables-mod-tproxy
+#+END_SRC
+
+** DNS 和 chnroutes
+
+这里用的是 [[https://github.com/felixonmars/dnsmasq-china-list][dnsmasq-china-list]]
+
+#+NAME: dns
+#+BEGIN_SRC shell
+git clone https://github.com/felixonmars/dnsmasq-china-list.git
+cd dnsmasq-china-list
+scp *.conf root@lede:~/
+
+ssh root@lede
+mkdir /etc/dnsmasq.conf.d
+mv *.conf /etc/dnsmasq.conf.d/
+
+# opkg install vim
+vim /etc/dnsmasq.conf
+# insert conf-dir=/etc/dnsmasq.conf.d/
+
+opkg remove dnsmasq && opkg install dnsmasq-full
+/etc/init.d/dnsmasq restart
+#+END_SRC
+
+然后再配置一个没有污染的 DNS，最好在 luci 里面，方便修改。
+
+最后是 [[https://github.com/shadowsocks/luci-app-shadowsocks/wiki/use-crontab-to-update-the-ignore.list][chnroutes]]
+
+#+NAME: routes
+#+BEGIN_SRC shell
+vim /usr/bin/update-ignore-list
+
+# insert
+#!/bin/sh
+
+set -e -o pipefail
+
+wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | \
+    awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > \
+    /tmp/ignore.list
+
+mv /tmp/ignore.list /etc/
+
+if pidof ss-redir>/dev/null; then
+    /etc/init.d/shadowsocks rules
+fi
+
+# end
+
+chmod +x /usr/bin/update-ignore-list
+
+update-ignore-list
+
+crontab -e
+30 4 * * 0 /usr/bin/update-ignore-list >> /var/log/update_ignore_list.log
+#+END_SRC
+
+Note to self： 下次最好升级之前先弄好。
